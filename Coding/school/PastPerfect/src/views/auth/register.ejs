@@ -1,0 +1,150 @@
+<div class="auth-container">
+  <div class="auth-card card">
+    <div class="card-body p-8">
+      <div class="auth-header">
+        <h1 class="auth-title">Register Your School</h1>
+        <p class="auth-subtitle">Create an account and set up your school's archive</p>
+      </div>
+      
+      <form class="auth-form" action="/api/auth/register" method="POST" novalidate>
+        <div class="form-group">
+          <label for="schoolName" class="form-label">School Name <span class="required">*</span></label>
+          <input 
+            type="text" 
+            id="schoolName" 
+            name="schoolName" 
+            class="form-input" 
+            placeholder="e.g., Springfield High School"
+            required
+            autocomplete="organization"
+            autofocus
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="schoolSlug" class="form-label">School URL <span class="required">*</span></label>
+          <div class="input-group">
+            <span class="input-group-text">pastperfect.app/</span>
+            <input 
+              type="text" 
+              id="schoolSlug" 
+              name="schoolSlug" 
+              class="form-input" 
+              placeholder="springfield-high"
+              required
+              pattern="[a-z0-9-]+"
+              autocomplete="off"
+            >
+          </div>
+          <p class="form-hint">This will be your school's unique address. Letters, numbers, and hyphens only.</p>
+        </div>
+        
+        <hr class="my-6 border-gray-200">
+        
+        <div class="form-group">
+          <label for="firstName" class="form-label">Your First Name <span class="required">*</span></label>
+          <input 
+            type="text" 
+            id="firstName" 
+            name="firstName" 
+            class="form-input" 
+            placeholder="John"
+            required
+            autocomplete="given-name"
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="lastName" class="form-label">Your Last Name <span class="required">*</span></label>
+          <input 
+            type="text" 
+            id="lastName" 
+            name="lastName" 
+            class="form-input" 
+            placeholder="Doe"
+            required
+            autocomplete="family-name"
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="email" class="form-label">Your Email <span class="required">*</span></label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            class="form-input" 
+            placeholder="john@school.edu"
+            required
+            autocomplete="email"
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="password" class="form-label">Password <span class="required">*</span></label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            class="form-input" 
+            placeholder="••••••••"
+            required
+            minlength="8"
+            autocomplete="new-password"
+          >
+          <p class="form-hint">At least 8 characters</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="confirmPassword" class="form-label">Confirm Password <span class="required">*</span></label>
+          <input 
+            type="password" 
+            id="confirmPassword" 
+            name="confirmPassword" 
+            class="form-input" 
+            placeholder="••••••••"
+            required
+            autocomplete="new-password"
+          >
+        </div>
+        
+        <div class="form-group form-check">
+          <input type="checkbox" id="terms" name="terms" class="form-check-input" required>
+          <label for="terms" class="form-check-label">
+            I agree to the <a href="/terms" class="text-sky hover:underline">Terms of Service</a> and <a href="/privacy" class="text-sky hover:underline">Privacy Policy</a>
+          </label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block btn-lg mb-4">Create School Account</button>
+      </form>
+      
+      <div class="auth-footer">
+        <p class="auth-footer-text">
+          Already have an account? 
+          <a href="/login" class="auth-footer-link">Sign in</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const schoolName = document.getElementById('schoolName');
+  const schoolSlug = document.getElementById('schoolSlug');
+  
+  schoolName.addEventListener('input', () => {
+    if (!schoolSlug.dataset.manual) {
+      schoolSlug.value = schoolName.value
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+    }
+  });
+  
+  schoolSlug.addEventListener('input', () => {
+    schoolSlug.dataset.manual = 'true';
+  });
+});
+</script>

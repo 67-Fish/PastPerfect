@@ -1,0 +1,56 @@
+<div class="auth-container">
+  <div class="auth-card card">
+    <div class="card-body p-8">
+      <div class="auth-header">
+        <h1 class="auth-title">Welcome Back</h1>
+        <p class="auth-subtitle">Sign in to access your school's past papers</p>
+      </div>
+      
+      <form class="auth-form" action="/api/auth/login" method="POST" novalidate>
+        <div class="form-group">
+          <label for="email" class="form-label">Email Address</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            class="form-input" 
+            placeholder="you@school.edu"
+            required
+            autocomplete="email"
+            autofocus
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            class="form-input" 
+            placeholder="••••••••"
+            required
+            autocomplete="current-password"
+          >
+        </div>
+        
+        <div class="form-group flex items-center justify-between">
+          <label class="form-check">
+            <input type="checkbox" name="remember" class="form-check-input">
+            <span class="form-check-label">Remember me</span>
+          </label>
+          <a href="/forgot-password" class="btn-link">Forgot password?</a>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block btn-lg mb-4">Sign In</button>
+      </form>
+      
+      <div class="auth-footer">
+        <p class="auth-footer-text">
+          Don't have an account? 
+          <a href="/register" class="auth-footer-link">Register your school</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

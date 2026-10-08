@@ -1,0 +1,336 @@
+<div class="page-header">
+  <nav class="breadcrumb mb-4" aria-label="Breadcrumb">
+    <ol class="breadcrumb flex items-center gap-2">
+      <li class="breadcrumb-item"><a href="/dashboard" class="breadcrumb-link">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="/papers" class="breadcrumb-link">Papers</a></li>
+      <li class="breadcrumb-item"><span class="breadcrumb-current" aria-current="page">Upload Paper</span></li>
+    </ol>
+  </nav>
+  <h1 class="page-title">Upload Past Paper</h1>
+  <p class="page-subtitle">Add a new exam paper to your school's archive</p>
+</div>
+
+<div class="upload-form">
+  <div class="upload-form-header">
+    <h2 class="upload-form-title">Upload New Paper</h2>
+    <p class="upload-form-subtitle">Fill in the details and select a PDF file to upload</p>
+  </div>
+  
+  <form id="upload-form" action="/api/papers" method="POST" enctype="multipart/form-data" novalidate>
+    <!-- File Upload -->
+    <div class="upload-dropzone" id="dropzone">
+      <input 
+        type="file" 
+        id="file-input" 
+        name="file" 
+        class="file-upload-input" 
+        accept="application/pdf"
+        required
+        aria-describedby="file-hint"
+      >
+      <div class="file-upload-content" id="dropzone-content">
+        <svg class="file-upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a1 1 0 011-1h12a1 1 0 110 2H8a1 1 0 01-1-1z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4a1 1 0 011-1h12a1 1 0 011 1v4m-4 8l-4-4m0 0L8 8m4-4v12"/>
+        </svg>
+        <p class="file-upload-text">Drag & drop a PDF file here, or click to browse</p>
+        <p id="file-hint" class="file-upload-hint">PDF only, max 50MB</p>
+      </div>
+      <div class="upload-preview" id="file-preview" style="display: none;" aria-live="polite">
+        <div class="upload-preview-icon">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343"/></svg>
+        </div>
+        <div class="upload-preview-info">
+          <p class="upload-preview-name" id="preview-name"></p>
+          <p class="upload-preview-size" id="preview-size"></p>
+        </div>
+        <button type="button" class="upload-preview-remove" id="remove-file" aria-label="Remove file">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="form-error" id="file-error" style="display: none;"></div>
+    </div>
+    
+    <!-- Progress Bar (shown during upload) -->
+    <div class="upload-progress" id="upload-progress" style="display: none;" aria-live="polite" aria-label="Upload progress">
+      <div class="upload-progress-bar">
+        <div class="upload-progress-fill" id="progress-fill" style="width: 0%"></div>
+      </div>
+      <p class="upload-progress-text" id="progress-text">0%</p>
+    </div>
+    
+    <!-- Metadata Fields -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div class="form-group">
+        <label for="title" class="form-label">Paper Title <span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="title" 
+          name="title" 
+          class="form-input" 
+          placeholder="e.g., Mathematics Paper 1 - June 2023"
+          required
+          maxlength="255"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="paperType" class="form-label">Paper Type <span class="required">*</span></label>
+        <select id="paperType" name="paperType" class="form-select" required>
+          <option value="exam">Exam Paper</option>
+          <option value="mark_scheme">Mark Scheme</option>
+          <option value="examiner_report">Examiner Report</option>
+          <option value="syllabus">Syllabus</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="subject" class="form-label">Subject <span class="required">*</span></label>
+        <select id="subject" name="subject" class="form-select" required>
+          <option value="">Select Subject</option>
+          <% (subjects || []).forEach(s => { %>
+            <option value="<%= s.id %>"><%= s.name %></option>
+          <% }) %>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="examSeries" class="form-label">Exam Series <span class="required">*</span></label>
+        <select id="examSeries" name="examSeries" class="form-select" required>
+          <option value="">Select Exam Series</option>
+          <% (examSeries || []).forEach(es => { %>
+            <option value="<%= es.id %>"><%= es.name %> <%= es.year %></option>
+          <% }) %>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="grade" class="form-label">Grade Level</label>
+        <select id="grade" name="grade" class="form-select">
+          <option value="">Select Grade</option>
+          <% (grades || []).forEach(g => { %>
+            <option value="<%= g %>">Grade <%= g %></option>
+          <% }) %>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="duration" class="form-label">Duration (minutes)</label>
+        <input 
+          type="number" 
+          id="duration" 
+          name="duration" 
+          class="form-input" 
+          placeholder="e.g., 90"
+          min="1"
+          max="600"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="totalMarks" class="form-label">Total Marks</label>
+        <input 
+          type="number" 
+          id="totalMarks" 
+          name="totalMarks" 
+          class="form-input" 
+          placeholder="e.g., 100"
+          min="1"
+          max="1000"
+        >
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="description" class="form-label">Description</label>
+      <textarea 
+        id="description" 
+        name="description" 
+        class="form-textarea" 
+        placeholder="Optional: Add details about this paper, topics covered, etc."
+        rows="4"
+      ></textarea>
+    </div>
+    
+    <div class="form-group form-check">
+      <input type="checkbox" id="publish" name="publish" class="form-check-input">
+      <label for="publish" class="form-check-label">Publish immediately (visible to students)</label>
+    </div>
+    
+    <div class="upload-actions">
+      <a href="/papers" class="btn btn-outline">Cancel</a>
+      <button type="submit" id="submit-btn" class="btn btn-primary" disabled>
+        <span id="btn-text">Upload Paper</span>
+        <svg id="btn-spinner" class="w-5 h-5 animate-spin hidden" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>
+      </button>
+    </div>
+  </form>
+</div>
+
+<script type="module">
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('file-input');
+const dropzoneContent = document.getElementById('dropzone-content');
+const filePreview = document.getElementById('file-preview');
+const previewName = document.getElementById('preview-name');
+const previewSize = document.getElementById('preview-size');
+const removeFile = document.getElementById('remove-file');
+const fileError = document.getElementById('file-error');
+const uploadProgress = document.getElementById('upload-progress');
+const progressFill = document.getElementById('progress-fill');
+const progressText = document.getElementById('progress-text');
+const submitBtn = document.getElementById('submit-btn');
+const btnText = document.getElementById('btn-text');
+const btnSpinner = document.getElementById('btn-spinner');
+const form = document.getElementById('upload-form');
+
+let selectedFile = null;
+
+function validateFile(file) {
+  if (!file) return 'Please select a file';
+  if (file.type !== 'application/pdf') return 'Only PDF files are allowed';
+  if (file.size > 50 * 1024 * 1024) return 'File must be less than 50MB';
+  return null;
+}
+
+function showFile(file) {
+  selectedFile = file;
+  const error = validateFile(file);
+  if (error) {
+    fileError.textContent = error;
+    fileError.style.display = 'block';
+    submitBtn.disabled = true;
+    return;
+  }
+  
+  fileError.style.display = 'none';
+  dropzoneContent.style.display = 'none';
+  filePreview.style.display = 'flex';
+  previewName.textContent = file.name;
+  previewSize.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+  submitBtn.disabled = false;
+}
+
+function removeFileHandler() {
+  selectedFile = null;
+  fileInput.value = '';
+  dropzoneContent.style.display = 'block';
+  filePreview.style.display = 'none';
+  submitBtn.disabled = true;
+  fileError.style.display = 'none';
+}
+
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+  dropzone.addEventListener(eventName, (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, false);
+});
+
+['dragenter', 'dragover'].forEach(eventName => {
+  dropzone.addEventListener(eventName, () => dropzone.classList.add('drag-over'), false);
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+  dropzone.addEventListener(eventName, () => dropzone.classList.remove('drag-over'), false);
+});
+
+dropzone.addEventListener('drop', (e) => {
+  const files = e.dataTransfer.files;
+  if (files.length) {
+    fileInput.files = files;
+    showFile(files[0]);
+  }
+}, false);
+
+dropzone.addEventListener('click', (e) => {
+  if (e.target === dropzone || e.target === dropzoneContent || dropzoneContent.contains(e.target)) {
+    fileInput.click();
+  }
+});
+
+fileInput.addEventListener('change', (e) => {
+  if (e.target.files.length) {
+    showFile(e.target.files[0]);
+  }
+});
+
+removeFile.addEventListener('click', removeFileHandler);
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  if (!selectedFile) return;
+  
+  const formData = new FormData(form);
+  
+  // Show progress
+  uploadProgress.style.display = 'block';
+  submitBtn.disabled = true;
+  btnText.textContent = 'Uploading...';
+  btnSpinner.classList.remove('hidden');
+  
+  try {
+    const response = await fetch('/api/papers', {
+      method: 'POST',
+      body: formData,
+      credentials: 'include'
+    });
+    
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Upload failed');
+    }
+    
+    progressFill.style.width = '100%';
+    progressText.textContent = '100%';
+    btnText.textContent = 'Success!';
+    
+    setTimeout(() => {
+      window.location.href = '/papers';
+    }, 1000);
+    
+  } catch (err) {
+    console.error(err);
+    fileError.textContent = err.message;
+    fileError.style.display = 'block';
+    uploadProgress.style.display = 'none';
+    submitBtn.disabled = false;
+    btnText.textContent = 'Upload Paper';
+    btnSpinner.classList.add('hidden');
+  }
+});
+
+// Simulate progress for better UX
+let progressInterval;
+function startProgressSimulation() {
+  let progress = 0;
+  progressInterval = setInterval(() => {
+    progress += Math.random() * 10;
+    if (progress > 90) progress = 90;
+    progressFill.style.width = `${progress}%`;
+    progressText.textContent = `${Math.round(progress)}%`;
+  }, 200);
+}
+
+function stopProgressSimulation() {
+  clearInterval(progressInterval);
+  progressFill.style.width = '100%';
+  progressText.textContent = '100%';
+}
+
+// Hook into fetch to simulate progress
+const originalFetch = window.fetch;
+window.fetch = async (url, options) => {
+  if (url === '/api/papers' && options.method === 'POST') {
+    startProgressSimulation();
+    try {
+      return await originalFetch(url, options);
+    } finally {
+      stopProgressSimulation();
+    }
+  }
+  return originalFetch(url, options);
+};
+</script>

@@ -1,0 +1,183 @@
+<div class="page-header flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+  <div>
+    <h1 class="page-title">Past Papers</h1>
+    <p class="page-subtitle">Browse and search your school's exam paper archive</p>
+  </div>
+  <% if (user?.roles?.includes('admin') || user?.roles?.includes('schoolAdmin') || user?.roles?.includes('teacher')) { %>
+    <a href="/papers/upload" class="btn btn-primary">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+      Upload Paper
+    </a>
+  <% } %>
+</div>
+
+<!-- Filters -->
+<div class="paper-filters" role="search" aria-label="Paper filters">
+  <form id="filter-form" class="filter-row">
+    <div class="filter-group">
+      <label for="search">Search</label>
+      <input type="text" id="search" name="search" class="form-input" placeholder="Search titles..." value="<%= queryParams?.search || '' %>">
+    </div>
+    
+    <div class="filter-group">
+      <label for="subject">Subject</label>
+      <select id="subject" name="subject" class="form-select">
+        <option value="">All Subjects</option>
+        <% (subjects || []).forEach(s => { %>
+          <option value="<%= s.id %>" <%= queryParams?.subject == s.id ? 'selected' : '' %>><%= s.name %></option>
+        <% }) %>
+      </select>
+    </div>
+    
+    <div class="filter-group">
+      <label for="examSeries">Exam Series</label>
+      <select id="examSeries" name="examSeries" class="form-select">
+        <option value="">All Series</option>
+        <% (examSeries || []).forEach(es => { %>
+          <option value="<%= es.id %>" <%= queryParams?.examSeries == es.id ? 'selected' : '' %>><%= es.name %> <%= es.year %></option>
+        <% }) %>
+      </select>
+    </div>
+    
+    <div class="filter-group">
+      <label for="grade">Grade Level</label>
+      <select id="grade" name="grade" class="form-select">
+        <option value="">All Grades</option>
+        <% (grades || []).forEach(g => { %>
+          <option value="<%= g %>" <%= queryParams?.grade == g ? 'selected' : '' %>><%= g %></option>
+        <% }) %>
+      </select>
+    </div>
+    
+    <div class="filter-group">
+      <label for="status">Status</label>
+      <select id="status" name="status" class="form-select">
+        <option value="">All Statuses</option>
+        <option value="published" <%= queryParams?.status === 'published' ? 'selected' : '' %>>Published</option>
+        <option value="draft" <%= queryParams?.status === 'draft' ? 'selected' : '' %>>Draft</option>
+        <option value="archived" <%= queryParams?.status === 'archived' ? 'selected' : '' %>>Archived</option>
+      </select>
+    </div>
+    
+    <div class="filter-group">
+      <button type="submit" class="btn btn-primary w-full sm:w-auto">Filter</button>
+    </div>
+    <% if (Object.keys(queryParams || {}).length > 0) { %>
+      <div class="filter-group">
+        <a href="/papers" class="btn btn-outline w-full sm:w-auto">Clear</a>
+      </div>
+    <% } %>
+  </form>
+</div>
+
+<!-- Papers Grid -->
+<div id="papers-container">
+  <% if (papers && papers.length > 0) { %>
+    <div class="paper-grid" role="list" aria-label="Papers">
+      <% papers.forEach(paper => { %>
+        <article class="paper-card" role="listitem">
+          <header class="paper-card-header">
+            <span class="paper-card-badge badge badge-secondary"><%= paper.paper_type || 'exam' %></span>
+            <div>
+              <h3 class="paper-card-subject"><%= paper.subject_name || 'Unknown Subject' %></h3>
+              <p class="paper-card-series"><%= paper.exam_series_name || '' %> <%= paper.exam_series_year || '' %></p>
+            </div>
+          </header>
+          <div class="paper-card-body">
+            <h4 class="paper-card-title"><%= paper.title %></h4>
+            <div class="paper-card-meta">
+              <% if (paper.grade_level) { %>
+                <span class="paper-card-meta-item">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                  Grade <%= paper.grade_level %>
+                </span>
+              <% } %>
+              <% if (paper.duration_minutes) { %>
+                <span class="paper-card-meta-item">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <%= paper.duration_minutes %> min
+                </span>
+              <% } %>
+              <% if (paper.total_marks) { %>
+                <span class="paper-card-meta-item">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                  <%= paper.total_marks %> marks
+                </span>
+              <% } %>
+            </div>
+          </div>
+          <footer class="paper-card-footer">
+            <span class="badge badge-<%= paper.status === 'published' ? 'success' : paper.status === 'draft' ? 'warning' : 'outline' %>"><%= paper.status %></span>
+            <div class="paper-card-actions">
+              <a href="/papers/<%= paper.id %>" class="btn btn-outline btn-sm">View</a>
+              <% if (user?.roles?.includes('admin') || user?.roles?.includes('schoolAdmin') || (user?.roles?.includes('teacher') && paper.created_by === user.id)) { %>
+                <a href="/papers/<%= paper.id %>/download" class="btn btn-primary btn-sm">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                  Download
+                </a>
+              <% } %>
+            </div>
+          </footer>
+        </article>
+      <% }) %>
+    </div>
+    
+    <%- include('../partials/pagination', { pagination: pagination, queryParams: queryParams }) %>
+  <% } else { %>
+    <div class="dashboard-empty" style="grid-column: 1 / -1;">
+      <svg class="dashboard-empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      <h3 class="dashboard-empty-title">No papers found</h3>
+      <p class="dashboard-empty-text">Try adjusting your filters or <%= user?.roles?.includes('admin') || user?.roles?.includes('schoolAdmin') || user?.roles?.includes('teacher') ? '<a href="/papers/upload" class="text-sky hover:underline font-medium">upload a new paper</a>' : '' %>.</p>
+    </div>
+  <% } %>
+</div>
+
+<script type="module">
+import { api } from '/public/js/api.js';
+
+// Load filter options
+async function loadFilters() {
+  try {
+    const [subjectsRes, seriesRes] = await Promise.all([
+      api.get('/api/subjects?limit=100'),
+      api.get('/api/exam-series?limit=100')
+    ]);
+    
+    const subjectSelect = document.getElementById('subject');
+    const seriesSelect = document.getElementById('examSeries');
+    
+    subjectsRes.data?.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.id;
+      opt.textContent = s.name;
+      subjectSelect.appendChild(opt);
+    });
+    
+    seriesRes.data?.forEach(es => {
+      const opt = document.createElement('option');
+      opt.value = es.id;
+      opt.textContent = `${es.name} ${es.year}`;
+      seriesSelect.appendChild(opt);
+    });
+    
+    // Set selected values from URL
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('subject')) subjectSelect.value = params.get('subject');
+    if (params.get('examSeries')) seriesSelect.value = params.get('examSeries');
+    if (params.get('grade')) document.getElementById('grade').value = params.get('grade');
+    if (params.get('status')) document.getElementById('status').value = params.get('status');
+    if (params.get('search')) document.getElementById('search').value = params.get('search');
+  } catch (err) {
+    console.error('Failed to load filters:', err);
+  }
+}
+
+loadFilters();
+
+// Auto-submit on select change
+document.querySelectorAll('#filter-form select').forEach(select => {
+  select.addEventListener('change', () => {
+    document.getElementById('filter-form').submit();
+  });
+});
+</script>

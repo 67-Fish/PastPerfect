@@ -1,0 +1,131 @@
+<nav class="bg-navy text-white shadow-sm" role="navigation" aria-label="Main navigation">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex items-center">
+        <a href="/" class="flex items-center space-x-2" aria-label="PastPerfect Home">
+          <svg class="w-8 h-8 text-sky" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+          </svg>
+          <span class="font-title font-bold text-xl">PastPerfect</span>
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
+        <% if (user) { %>
+          <a href="/dashboard" class="nav-link <%= currentPath === '/dashboard' ? 'active' : '' %>">Dashboard</a>
+          <a href="/papers" class="nav-link <%= currentPath?.startsWith('/papers') ? 'active' : '' %>">Past Papers</a>
+          
+          <% if (user.roles.includes('admin') || user.roles.includes('schoolAdmin') || user.roles.includes('teacher')) { %>
+            <a href="/papers/upload" class="nav-link <%= currentPath === '/papers/upload' ? 'active' : '' %>">Upload</a>
+          <% } %>
+          
+          <a href="/study" class="nav-link <%= currentPath?.startsWith('/study') ? 'active' : '' %>">Study</a>
+          
+          <% if (user.roles.includes('admin')) { %>
+            <a href="/admin" class="nav-link <%= currentPath?.startsWith('/admin') ? 'active' : '' %>">Admin</a>
+          <% } else if (user.roles.includes('schoolAdmin')) { %>
+            <a href="/school/settings" class="nav-link <%= currentPath?.startsWith('/school') ? 'active' : '' %>">School</a>
+          <% } %>
+        <% } else { %>
+          <a href="/login" class="nav-link">Login</a>
+          <a href="/register" class="nav-link">Register</a>
+        <% } %>
+      </div>
+
+      <!-- Right side actions -->
+      <div class="hidden md:flex md:items-center md:space-x-4">
+        <% if (user) { %>
+          <div class="relative" x-data="{ open: false }" @click.outside="open = false">
+            <button 
+              @click="open = !open" 
+              class="flex items-center space-x-2 text-sm font-medium hover:text-sky transition-colors"
+              aria-expanded="false"
+              aria-haspopup="true"
+              aria-label="User menu"
+            >
+              <div class="w-8 h-8 rounded-full bg-sky flex items-center justify-center font-title font-semibold">
+                <%= user.email.charAt(0).toUpperCase() %>
+              </div>
+              <span class="hidden sm:block"><%= user.email.split('@')[0] %></span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            
+            <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 border border-gray-200 z-50">
+              <div class="px-4 py-2 border-b border-gray-100">
+                <p class="text-xs font-medium text-dark-grey"><%= user.email %></p>
+                <p class="text-xs text-gray-500 capitalize"><%= user.roles[0] %></p>
+              </div>
+              <a href="/dashboard" class="block px-4 py-2 text-sm text-dark-grey hover:bg-cream">Dashboard</a>
+              <a href="/papers" class="block px-4 py-2 text-sm text-dark-grey hover:bg-cream">My Papers</a>
+              <hr class="my-1 border-gray-100">
+              <form action="/api/auth/logout" method="POST" class="block">
+                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-cream">Logout</button>
+              </form>
+            </div>
+          </div>
+        <% } else { %>
+          <a href="/login" class="btn btn-ghost text-sm">Login</a>
+          <a href="/register" class="btn btn-primary text-sm">Get Started</a>
+        <% } %>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden flex items-center">
+        <button 
+          @click="mobileMenuOpen = !mobileMenuOpen" 
+          class="text-white hover:text-sky p-2 rounded-lg transition-colors"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Toggle menu"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            <path x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="md:hidden border-t border-navy/20 bg-navy" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+    <div class="px-4 pt-4 pb-6 space-y-3">
+      <% if (user) { %>
+        <a href="/dashboard" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg">Dashboard</a>
+        <a href="/papers" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg">Past Papers</a>
+        
+        <% if (user.roles.includes('admin') || user.roles.includes('schoolAdmin') || user.roles.includes('teacher')) { %>
+          <a href="/papers/upload" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg">Upload Paper</a>
+        <% } %>
+        
+        <a href="/study" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg">Study</a>
+        
+        <% if (user.roles.includes('admin')) { %>
+          <a href="/admin" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg">Admin</a>
+        <% } else if (user.roles.includes('schoolAdmin')) { %>
+          <a href="/school/settings" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg">School Settings</a>
+        <% } %>
+        
+        <hr class="border-white/10">
+        <form action="/api/auth/logout" method="POST" class="block">
+          <button type="submit" class="w-full text-left px-3 py-2 text-base font-medium text-red-400 hover:text-red-300 rounded-lg">Logout</button>
+        </form>
+      <% } else { %>
+        <a href="/login" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg">Login</a>
+        <a href="/register" class="block px-3 py-2 text-base font-medium text-sky hover:text-sky/80 rounded-lg">Register</a>
+      <% } %>
+    </div>
+  </div>
+</nav>
+
+<script>
+document.addEventListener('alpine:init', () => {
+  Alpine.data('navbar', () => ({
+    mobileMenuOpen: false,
+  }));
+});
+</script>

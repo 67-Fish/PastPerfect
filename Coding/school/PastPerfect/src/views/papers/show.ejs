@@ -1,0 +1,141 @@
+<div class="page-header">
+  <nav class="breadcrumb mb-4" aria-label="Breadcrumb">
+    <ol class="breadcrumb flex items-center gap-2">
+      <li class="breadcrumb-item"><a href="/dashboard" class="breadcrumb-link">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="/papers" class="breadcrumb-link">Papers</a></li>
+      <li class="breadcrumb-item"><span class="breadcrumb-current" aria-current="page"><%= paper?.title || 'Paper Details' %></span></li>
+    </ol>
+  </nav>
+  <h1 class="page-title"><%= paper?.title || 'Paper Details' %></h1>
+  <div class="paper-detail-meta">
+    <span class="paper-detail-meta-item">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+      <%= paper?.subject_name || 'Unknown Subject' %>
+    </span>
+    <span class="paper-detail-meta-item">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      <%= paper?.exam_series_name || '' %> <%= paper?.exam_series_year || '' %>
+    </span>
+    <span class="paper-detail-meta-item">
+      <span class="badge badge-<%= paper?.paper_type === 'mark_scheme' ? 'info' : paper?.paper_type === 'examiner_report' ? 'warning' : 'primary' %>"><%= paper?.paper_type || 'exam' %></span>
+    </span>
+    <% if (paper?.grade_level) { %>
+    <span class="paper-detail-meta-item">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+      Grade <%= paper?.grade_level %>
+    </span>
+    <% } %>
+    <% if (paper?.duration_minutes) { %>
+    <span class="paper-detail-meta-item">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <%= paper?.duration_minutes %> minutes
+    </span>
+    <% } %>
+    <% if (paper?.total_marks) { %>
+    <span class="paper-detail-meta-item">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+      <%= paper?.total_marks %> marks
+    </span>
+    <% } %>
+    <span class="paper-detail-meta-item">
+      <span class="badge badge-<%= paper?.status === 'published' ? 'success' : paper?.status === 'draft' ? 'warning' : 'outline' %>"><%= paper?.status || 'draft' %></span>
+    </span>
+  </div>
+</div>
+
+<div class="paper-detail-content">
+  <main class="paper-detail-main">
+    <% if (paper?.description) { %>
+      <div class="p-6 border-b border-gray-200">
+        <h2 class="font-title font-semibold text-navy mb-2">Description</h2>
+        <div class="text-dark-grey whitespace-pre-wrap"><%= paper?.description %></div>
+      </div>
+    <% } %>
+    
+    <div id="pdf-viewer-container">
+      <iframe 
+        id="pdf-viewer" 
+        class="paper-viewer" 
+        src="/api/papers/<%= paperId %>/view"
+        title="Paper PDF Viewer"
+        allow="fullscreen"
+      ></iframe>
+    </div>
+    
+    <div class="p-6 border-t border-gray-200 flex flex-wrap gap-3">
+      <a href="/api/papers/<%= paperId %>/download" class="btn btn-primary">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        Download PDF
+      </a>
+      <a href="/papers" class="btn btn-outline">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Back to Papers
+      </a>
+    </div>
+  </main>
+  
+  <aside class="paper-detail-sidebar">
+    <div class="paper-download-card">
+      <div class="paper-download-icon">
+        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829M12 17v4"/></svg>
+      </div>
+      <h3 class="paper-download-title">Download Paper</h3>
+      <p class="paper-download-info">
+        <%= paper?.file_name || 'paper.pdf' %>
+        <% if (paper?.file_size) { %>
+          <br><span class="text-xs"><%= (paper.file_size / (1024*1024)).toFixed(1) %> MB</span>
+        <% } %>
+      </p>
+      <a href="/api/papers/<%= paperId %>/download" class="btn btn-primary btn-block">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        Download
+      </a>
+    </div>
+    
+    <% if (relatedPapers && relatedPapers.length > 0) { %>
+      <div class="paper-related-card">
+        <h3 class="paper-related-title">Related Papers</h3>
+        <div class="paper-related-list">
+          <% relatedPapers.slice(0, 5).forEach(rp => { %>
+            <a href="/papers/<%= rp.id %>" class="paper-related-item">
+              <div class="paper-related-item-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343"/></svg>
+              </div>
+              <div class="paper-related-item-info">
+                <h4 class="paper-related-item-title"><%= rp.title %></h4>
+                <p class="paper-related-item-meta"><%= rp.subject_name || '' %> · <%= rp.exam_series_year || '' %> · <%= rp.grade_level ? 'Grade ' + rp.grade_level : '' %></p>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
+  </aside>
+</div>
+
+<script type="module">
+// PDF viewer error handling
+const viewer = document.getElementById('pdf-viewer');
+viewer.addEventListener('load', () => {
+  // Check if PDF loaded successfully
+  try {
+    const doc = viewer.contentDocument || viewer.contentWindow.document;
+    if (doc.body.innerHTML.includes('PDF')) {
+      // PDF.js might have loaded
+    }
+  } catch (e) {
+    // Cross-origin, can't check
+  }
+});
+
+viewer.addEventListener('error', () => {
+  document.getElementById('pdf-viewer-container').innerHTML = `
+    <div class="dashboard-empty" style="height: 70vh;">
+      <svg class="dashboard-empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343"/></svg>
+      <h3 class="dashboard-empty-title">Unable to Preview</h3>
+      <p class="dashboard-empty-text">Your browser couldn't display the PDF inline.</p>
+      <a href="/api/papers/<%= paperId %>/download" class="btn btn-primary mt-4">Download PDF Instead</a>
+    </div>
+  `;
+});
+</script>

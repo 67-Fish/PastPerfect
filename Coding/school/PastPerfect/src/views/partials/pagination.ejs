@@ -1,0 +1,49 @@
+<% if (pagination && pagination.totalPages > 1) { %>
+  <nav class="flex items-center justify-center gap-2 mt-6" aria-label="Pagination">
+    <% const currentPage = pagination.page; const totalPages = pagination.totalPages; %>
+    
+    <% if (currentPage > 1) { %>
+      <a href="?page=<%= currentPage - 1 %><%= Object.entries(queryParams || {}).filter(([k]) => k !== 'page').map(([k, v]) => '&' + k + '=' + encodeURIComponent(v)).join('') %>" class="btn btn-outline btn-sm" aria-label="Previous page">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </a>
+    <% } %>
+    
+    <% 
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(totalPages, currentPage + 2);
+      
+      if (endPage - startPage < 4) {
+        if (startPage === 1) endPage = Math.min(5, totalPages);
+        else if (endPage === totalPages) startPage = Math.max(1, totalPages - 4);
+      }
+    %>
+    
+    <% if (startPage > 1) { %>
+      <a href="?page=1<%= Object.entries(queryParams || {}).filter(([k]) => k !== 'page').map(([k, v]) => '&' + k + '=' + encodeURIComponent(v)).join('') %>" class="btn btn-outline btn-sm">1</a>
+      <% if (startPage > 2) { %>
+        <span class="px-2 text-gray-400">...</span>
+      <% } %>
+    <% } %>
+    
+    <% for (let i = startPage; i <= endPage; i++) { %>
+      <% if (i === currentPage) { %>
+        <span class="btn btn-primary btn-sm" aria-current="page"><%= i %></span>
+      <% } else { %>
+        <a href="?page=<%= i %><%= Object.entries(queryParams || {}).filter(([k]) => k !== 'page').map(([k, v]) => '&' + k + '=' + encodeURIComponent(v)).join('') %>" class="btn btn-outline btn-sm"><%= i %></a>
+      <% } %>
+    <% } %>
+    
+    <% if (endPage < totalPages) { %>
+      <% if (endPage < totalPages - 1) { %>
+        <span class="px-2 text-gray-400">...</span>
+      <% } %>
+      <a href="?page=<%= totalPages %><%= Object.entries(queryParams || {}).filter(([k]) => k !== 'page').map(([k, v]) => '&' + k + '=' + encodeURIComponent(v)).join('') %>" class="btn btn-outline btn-sm"><%= totalPages %></a>
+    <% } %>
+    
+    <% if (currentPage < totalPages) { %>
+      <a href="?page=<%= currentPage + 1 %><%= Object.entries(queryParams || {}).filter(([k]) => k !== 'page').map(([k, v]) => '&' + k + '=' + encodeURIComponent(v)).join('') %>" class="btn btn-outline btn-sm" aria-label="Next page">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </a>
+    <% } %>
+  </nav>
+<% } %>
