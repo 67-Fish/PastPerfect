@@ -4,7 +4,7 @@
     <p class="page-subtitle">Browse and search your school's exam paper archive</p>
   </div>
   <% if (user?.roles?.includes('admin') || user?.roles?.includes('schoolAdmin') || user?.roles?.includes('teacher')) { %>
-    <a href="/papers/upload" class="btn btn-primary">
+    <a href="/papers/upload" class="btn btn-primary animate-fade-in">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
       Upload Paper
     </a>
@@ -60,11 +60,17 @@
     </div>
     
     <div class="filter-group">
-      <button type="submit" class="btn btn-primary w-full sm:w-auto">Filter</button>
+      <button type="submit" class="btn btn-primary w-full sm:w-auto">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        Filter
+      </button>
     </div>
     <% if (Object.keys(queryParams || {}).length > 0) { %>
       <div class="filter-group">
-        <a href="/papers" class="btn btn-outline w-full sm:w-auto">Clear</a>
+        <a href="/papers" class="btn btn-outline w-full sm:w-auto">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          Clear
+        </a>
       </div>
     <% } %>
   </form>
@@ -74,10 +80,10 @@
 <div id="papers-container">
   <% if (papers && papers.length > 0) { %>
     <div class="paper-grid" role="list" aria-label="Papers">
-      <% papers.forEach(paper => { %>
-        <article class="paper-card" role="listitem">
+      <% papers.forEach((paper, index) => { %>
+        <article class="paper-card" role="listitem" style="animation-delay: <%= index * 0.1 %>s;">
           <header class="paper-card-header">
-            <span class="paper-card-badge badge badge-secondary"><%= paper.paper_type || 'exam' %></span>
+            <span class="paper-card-badge badge badge-secondary animate-pulse"><%= paper.paper_type || 'exam' %></span>
             <div>
               <h3 class="paper-card-subject"><%= paper.subject_name || 'Unknown Subject' %></h3>
               <p class="paper-card-series"><%= paper.exam_series_name || '' %> <%= paper.exam_series_year || '' %></p>

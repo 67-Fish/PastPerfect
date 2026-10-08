@@ -1,30 +1,55 @@
 :root {
-  /* Colors */
+  /* ============================================
+     COLORS - SaveMyExams inspired (from idea.md)
+     ============================================ */
+  
+  /* Primary Colors */
+  --color-deep-navy: #172A46;
   --color-navy: #172A46;
   --color-navy-light: #1e3a5f;
   --color-navy-lighter: #254a7a;
+  --color-navy-dark: #0f1c2e;
+  
+  /* Secondary Colors */
+  --color-sky-blue: #6FA8DC;
   --color-sky: #6FA8DC;
   --color-sky-light: #8fc1e3;
   --color-sky-dark: #5a92c7;
+  --color-sky-bright: #265BF6;
+  
+  /* Background Colors */
+  --color-soft-cream: #F7F4EC;
   --color-cream: #F7F4EC;
   --color-cream-dark: #ebe6d9;
+  --color-cream-light: #fcfaf4;
+  
+  /* Neutral Colors */
   --color-white: #FFFFFF;
+  --color-black: #000000;
   --color-dark-grey: #343A40;
   --color-medium-grey: #6c757d;
   --color-light-grey: #dee2e6;
   --color-lighter-grey: #f8f9fa;
   
   /* Semantic colors */
-  --color-primary: var(--color-navy);
+  --color-primary: var(--color-deep-navy);
   --color-primary-hover: var(--color-navy-light);
-  --color-secondary: var(--color-sky);
+  --color-primary-active: var(--color-navy-dark);
+  --color-secondary: var(--color-sky-blue);
   --color-secondary-hover: var(--color-sky-dark);
-  --color-background: var(--color-cream);
+  --color-secondary-active: var(--color-sky-bright);
+  --color-accent: var(--color-sky-bright);
+  --color-background: var(--color-soft-cream);
+  --color-background-light: var(--color-cream-light);
   --color-surface: var(--color-white);
+  --color-surface-dark: var(--color-navy);
   --color-text: var(--color-dark-grey);
   --color-text-muted: var(--color-medium-grey);
+  --color-text-light: var(--color-white);
+  --color-text-inverse: var(--color-navy);
   --color-border: var(--color-light-grey);
   --color-border-focus: var(--color-sky);
+  --color-border-dark: rgba(255, 255, 255, 0.1);
   
   /* Status colors */
   --color-success: #28a745;
@@ -40,7 +65,7 @@
   --color-info-bg: #d1ecf1;
   --color-info-border: #bee5eb;
   
-  /* Typography */
+  /* Typography - SaveMyExams style */
   --font-title: 'Poppins', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
@@ -100,6 +125,8 @@
   --transition-fast: 150ms ease;
   --transition-normal: 200ms ease;
   --transition-slow: 300ms ease;
+  --transition-bounce: 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --transition-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
   
   /* Z-index */
   --z-dropdown: 100;
@@ -114,6 +141,132 @@
   --container-max: 80rem;
   --container-padding: 1.5rem;
 }
+
+/* ============================================
+   ANIMATIONS - SaveMyExams inspired with smooth effects
+   ============================================ */
+
+/* Fade animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide animations */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scale animations */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Float animation for cards */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Shake animation for errors */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+/* Spin animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Glow animation for focus states */
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(111, 168, 220, 0.4); }
+  50% { box-shadow: 0 0 0 10px rgba(111, 168, 220, 0); }
+}
+
+/* ============================================
+   ANIMATION UTILITY CLASSES
+   ============================================ */
+
+.animate-fade-in { animation: fadeIn 0.3s ease forwards; }
+.animate-fade-in-up { animation: fadeInUp 0.5s ease forwards; }
+.animate-fade-in-down { animation: fadeInDown 0.5s ease forwards; }
+.animate-slide-in-right { animation: slideInRight 0.5s ease forwards; }
+.animate-slide-in-left { animation: slideInLeft 0.5s ease forwards; }
+.animate-scale-in { animation: scaleIn 0.3s ease forwards; }
+.animate-pulse { animation: pulse 2s ease-in-out infinite; }
+.animate-bounce { animation: bounce 1s ease infinite; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-shake { animation: shake 0.5s ease; }
+.animate-spin { animation: spin 1s linear infinite; }
+.animate-glow { animation: glow 1.5s ease-in-out infinite; }
+
+/* Animation delays for staggering */
+.animation-delay-100 { animation-delay: 100ms; }
+.animation-delay-200 { animation-delay: 200ms; }
+.animation-delay-300 { animation-delay: 300ms; }
+.animation-delay-400 { animation-delay: 400ms; }
+.animation-delay-500 { animation-delay: 500ms; }
 
 /* Dark mode support (future) */
 @media (prefers-color-scheme: dark) {

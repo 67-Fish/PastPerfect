@@ -9,7 +9,7 @@
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value" id="stat-papers">—</div>
+      <div class="stat-value" id="stat-papers"></div>
       <div class="stat-label">Total Papers</div>
     </div>
   </article>
@@ -19,7 +19,7 @@
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value" id="stat-subjects">—</div>
+      <div class="stat-value" id="stat-subjects"></div>
       <div class="stat-label">Subjects</div>
     </div>
   </article>
@@ -29,7 +29,7 @@
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value" id="stat-published">—</div>
+      <div class="stat-value" id="stat-published"></div>
       <div class="stat-label">Published</div>
     </div>
   </article>
@@ -39,7 +39,7 @@
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
     </div>
     <div class="stat-content">
-      <div class="stat-value" id="stat-drafts">—</div>
+      <div class="stat-value" id="stat-drafts"></div>
       <div class="stat-label">Drafts</div>
     </div>
   </article>
@@ -57,7 +57,10 @@
         <h3 class="dashboard-empty-title">No papers yet</h3>
         <p class="dashboard-empty-text">Upload your first past paper to get started.</p>
         <% if (user?.roles?.includes('admin') || user?.roles?.includes('schoolAdmin') || user?.roles?.includes('teacher')) { %>
-          <a href="/papers/upload" class="btn btn-primary">Upload Paper</a>
+          <a href="/papers/upload" class="btn btn-primary mt-4">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a1 1 0 011-1h12a1 1 0 110 2H8a1 1 0 01-1-1z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4a1 1 0 011-1h12a1 1 0 011 1v4m-4 8l-4-4m0 0L8 8m4-4v12"/></svg>
+            Upload Paper
+          </a>
         <% } %>
       </div>
       <div class="table-container" id="recent-papers-table" style="display: none;">
@@ -84,51 +87,51 @@
     <div class="dashboard-section-body">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <% if (user?.roles?.includes('admin') || user?.roles?.includes('schoolAdmin') || user?.roles?.includes('teacher')) { %>
-          <a href="/papers/upload" class="card p-5 hover:shadow-md transition-shadow">
+          <a href="/papers/upload" class="card p-5 hover:shadow-md transition-all duration-200 group">
             <div class="flex items-center gap-4">
-              <div class="stat-icon stat-icon-primary">
+              <div class="stat-icon stat-icon-primary group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a1 1 0 011-1h12a1 1 0 110 2H8a1 1 0 01-1-1z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4a1 1 0 011-1h12a1 1 0 011 1v4m-4 8l-4-4m0 0L8 8m4-4v12"/></svg>
               </div>
               <div>
-                <h3 class="font-title font-semibold text-navy">Upload Paper</h3>
+                <h3 class="font-title font-semibold text-navy group-hover:text-sky transition-colors">Upload Paper</h3>
                 <p class="text-sm text-muted">Add a new past paper to the archive</p>
               </div>
             </div>
           </a>
         <% } %>
         
-        <a href="/papers" class="card p-5 hover:shadow-md transition-shadow">
+        <a href="/papers" class="card p-5 hover:shadow-md transition-all duration-200 group">
           <div class="flex items-center gap-4">
-            <div class="stat-icon stat-icon-secondary">
+            <div class="stat-icon stat-icon-secondary group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
             </div>
             <div>
-              <h3 class="font-title font-semibold text-navy">Browse Papers</h3>
+              <h3 class="font-title font-semibold text-navy group-hover:text-sky transition-colors">Browse Papers</h3>
               <p class="text-sm text-muted">Search and filter the archive</p>
             </div>
           </div>
         </a>
         
-        <a href="/study" class="card p-5 hover:shadow-md transition-shadow">
+        <a href="/study" class="card p-5 hover:shadow-md transition-all duration-200 group">
           <div class="flex items-center gap-4">
-            <div class="stat-icon stat-icon-success">
+            <div class="stat-icon stat-icon-success group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
             </div>
             <div>
-              <h3 class="font-title font-semibold text-navy">Study Tools</h3>
+              <h3 class="font-title font-semibold text-navy group-hover:text-sky transition-colors">Study Tools</h3>
               <p class="text-sm text-muted">Practice with timed exams</p>
             </div>
           </div>
         </a>
         
         <% if (user?.roles?.includes('schoolAdmin') || user?.roles?.includes('admin')) { %>
-          <a href="/school/users" class="card p-5 hover:shadow-md transition-shadow">
+          <a href="/school/users" class="card p-5 hover:shadow-md transition-all duration-200 group">
             <div class="flex items-center gap-4">
-              <div class="stat-icon stat-icon-warning">
+              <div class="stat-icon stat-icon-warning group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
               </div>
               <div>
-                <h3 class="font-title font-semibold text-navy">Manage Users</h3>
+                <h3 class="font-title font-semibold text-navy group-hover:text-sky transition-colors">Manage Users</h3>
                 <p class="text-sm text-muted">Add teachers and students</p>
               </div>
             </div>
@@ -152,11 +155,11 @@ async function loadDashboard() {
     const papers = papersRes.data || [];
     const subjects = subjectsRes.data || [];
     
-    // Update stats
-    document.getElementById('stat-papers').textContent = papersRes.total || 0;
-    document.getElementById('stat-subjects').textContent = subjects.length || 0;
-    document.getElementById('stat-published').textContent = papers.filter(p => p.status === 'published').length;
-    document.getElementById('stat-drafts').textContent = papers.filter(p => p.status === 'draft').length;
+    // Update stats with animation
+    animateValue('stat-papers', papersRes.total || 0);
+    animateValue('stat-subjects', subjects.length || 0);
+    animateValue('stat-published', papers.filter(p => p.status === 'published').length);
+    animateValue('stat-drafts', papers.filter(p => p.status === 'draft').length);
     
     // Recent papers table
     if (papers.length > 0) {
@@ -164,23 +167,53 @@ async function loadDashboard() {
       document.getElementById('recent-papers-table').style.display = 'block';
       
       const tbody = document.getElementById('recent-papers-body');
-      tbody.innerHTML = papers.map(paper => `
-        <tr>
+      tbody.innerHTML = papers.map((paper, index) => `
+        <tr style="animation: fadeInUp 0.5s ease forwards ${index * 0.1}s; opacity: 0;">
           <td>
             <a href="/papers/${paper.id}" class="font-medium text-navy hover:text-sky">${paper.title}</a>
           </td>
-          <td>${paper.subject_name || '—'}</td>
-          <td>${paper.exam_series_year || '—'}</td>
+          <td>${paper.subject_name || ''}</td>
+          <td>${paper.exam_series_year || ''}</td>
           <td><span class="badge badge-${paper.status === 'published' ? 'success' : paper.status === 'draft' ? 'warning' : 'outline'}">${paper.status}</span></td>
           <td>
             <a href="/papers/${paper.id}" class="btn btn-outline btn-sm">View</a>
           </td>
         </tr>
       `).join('');
+      
+      // Trigger animations
+      setTimeout(() => {
+        document.querySelectorAll('#recent-papers-body tr').forEach(row => {
+          row.style.opacity = '1';
+        });
+      }, 100);
     }
   } catch (err) {
     console.error('Failed to load dashboard:', err);
   }
+}
+
+// Animate number counting
+function animateValue(elementId, target) {
+  const el = document.getElementById(elementId);
+  const duration = 1000;
+  const start = 0;
+  const startTime = performance.now();
+  
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+    const current = Math.floor(start + (target - start) * easeOutQuart);
+    
+    el.textContent = current;
+    
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+  
+  requestAnimationFrame(update);
 }
 
 loadDashboard();

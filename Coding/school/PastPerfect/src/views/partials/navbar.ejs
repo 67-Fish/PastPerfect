@@ -1,4 +1,4 @@
-<nav class="bg-navy text-white shadow-sm" role="navigation" aria-label="Main navigation">
+<nav class="bg-navy text-white shadow-sm sticky top-0 z-50" role="navigation" aria-label="Main navigation">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Logo -->
@@ -7,7 +7,7 @@
           <svg class="w-8 h-8 text-sky" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
           </svg>
-          <span class="font-title font-bold text-xl">PastPerfect</span>
+          <span class="font-title font-bold text-xl tracking-wide">PAST<span class="text-sky">PERFECT</span></span>
         </a>
       </div>
 
@@ -45,7 +45,7 @@
               aria-haspopup="true"
               aria-label="User menu"
             >
-              <div class="w-8 h-8 rounded-full bg-sky flex items-center justify-center font-title font-semibold">
+              <div class="w-8 h-8 rounded-full bg-sky flex items-center justify-center font-title font-semibold animate-pulse">
                 <%= user.email.charAt(0).toUpperCase() %>
               </div>
               <span class="hidden sm:block"><%= user.email.split('@')[0] %></span>
@@ -54,22 +54,22 @@
               </svg>
             </button>
             
-            <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 border border-gray-200 z-50">
+            <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 border border-gray-200 z-50 animate-scale-in">
               <div class="px-4 py-2 border-b border-gray-100">
                 <p class="text-xs font-medium text-dark-grey"><%= user.email %></p>
                 <p class="text-xs text-gray-500 capitalize"><%= user.roles[0] %></p>
               </div>
-              <a href="/dashboard" class="block px-4 py-2 text-sm text-dark-grey hover:bg-cream">Dashboard</a>
-              <a href="/papers" class="block px-4 py-2 text-sm text-dark-grey hover:bg-cream">My Papers</a>
+              <a href="/dashboard" class="block px-4 py-2 text-sm text-dark-grey hover:bg-cream transition-colors">Dashboard</a>
+              <a href="/papers" class="block px-4 py-2 text-sm text-dark-grey hover:bg-cream transition-colors">My Papers</a>
               <hr class="my-1 border-gray-100">
               <form action="/api/auth/logout" method="POST" class="block">
-                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-cream">Logout</button>
+                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-cream transition-colors">Logout</button>
               </form>
             </div>
           </div>
         <% } else { %>
-          <a href="/login" class="btn btn-ghost text-sm">Login</a>
-          <a href="/register" class="btn btn-primary text-sm">Get Started</a>
+          <a href="/login" class="btn btn-ghost text-sm hover:text-sky transition-colors">Login</a>
+          <a href="/register" class="btn btn-secondary text-sm transition-colors">Get Started</a>
         <% } %>
       </div>
 
@@ -77,7 +77,7 @@
       <div class="md:hidden flex items-center">
         <button 
           @click="mobileMenuOpen = !mobileMenuOpen" 
-          class="text-white hover:text-sky p-2 rounded-lg transition-colors"
+          class="text-white hover:text-sky p-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-sky"
           aria-expanded="false"
           aria-controls="mobile-menu"
           aria-label="Toggle menu"
@@ -93,30 +93,30 @@
 
   <!-- Mobile Navigation -->
   <div x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="md:hidden border-t border-navy/20 bg-navy" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
-    <div class="px-4 pt-4 pb-6 space-y-3">
+    <div class="px-4 pt-4 pb-6 space-y-3 animate-fade-in">
       <% if (user) { %>
-        <a href="/dashboard" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg">Dashboard</a>
-        <a href="/papers" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg">Past Papers</a>
+        <a href="/dashboard" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg transition-colors">Dashboard</a>
+        <a href="/papers" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg transition-colors">Past Papers</a>
         
         <% if (user.roles.includes('admin') || user.roles.includes('schoolAdmin') || user.roles.includes('teacher')) { %>
-          <a href="/papers/upload" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg">Upload Paper</a>
+          <a href="/papers/upload" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg transition-colors">Upload Paper</a>
         <% } %>
         
-        <a href="/study" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg">Study</a>
+        <a href="/study" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg transition-colors">Study</a>
         
         <% if (user.roles.includes('admin')) { %>
-          <a href="/admin" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg">Admin</a>
+          <a href="/admin" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg transition-colors">Admin</a>
         <% } else if (user.roles.includes('schoolAdmin')) { %>
-          <a href="/school/settings" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg">School Settings</a>
+          <a href="/school/settings" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg transition-colors">School Settings</a>
         <% } %>
         
         <hr class="border-white/10">
         <form action="/api/auth/logout" method="POST" class="block">
-          <button type="submit" class="w-full text-left px-3 py-2 text-base font-medium text-red-400 hover:text-red-300 rounded-lg">Logout</button>
+          <button type="submit" class="w-full text-left px-3 py-2 text-base font-medium text-red-400 hover:text-red-300 rounded-lg transition-colors">Logout</button>
         </form>
       <% } else { %>
-        <a href="/login" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg">Login</a>
-        <a href="/register" class="block px-3 py-2 text-base font-medium text-sky hover:text-sky/80 rounded-lg">Register</a>
+        <a href="/login" class="block px-3 py-2 text-base font-medium text-white/80 hover:text-sky rounded-lg transition-colors">Login</a>
+        <a href="/register" class="block px-3 py-2 text-base font-medium text-sky hover:text-sky/80 rounded-lg transition-colors">Register</a>
       <% } %>
     </div>
   </div>
