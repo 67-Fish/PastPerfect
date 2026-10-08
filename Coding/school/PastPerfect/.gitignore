@@ -34,3 +34,6 @@ coverage/
 
 # Uploads (if using local storage)
 uploads/
+
+# Static files (symlinked from src/public)
+public/
