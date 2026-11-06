@@ -4,7 +4,7 @@ Welcome, Mr. Manny!
 
 This application is a digital archive of past examination papers. It allows you to browse and access previous examination questions, organize learning materials, and create practice questions for students.
 
-This guide will walk you through setting up and running the application on your computer. No programming experience is required. If you would like to just see a preview, you may watch the video provided.
+This guide will walk you through setting up and running the application on your computer. No programming experience is required. If you would like to just see a preview, you may watch the video here: https://drive.google.com/drive/folders/1oj-d66sOajx1dovfgq5Q0ZvgqA7-pYgl?usp=sharing
 
 ---
 
