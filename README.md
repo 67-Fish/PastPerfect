@@ -89,7 +89,7 @@ Your AI features should now be ready to use!
 
 **Important:** Keep your API key private. Do not share it with anyone or upload your `.env` file to GitHub.
 
-Please note that OpenRouter API usage may require credits, depending on the models used by the application.
+As long as no code is changed, no credits will be used. The AI system was created for the purpose of testing, and is therefore not using any paid models.
 
 ## 5. Install the Application
 
@@ -125,7 +125,7 @@ Enter the following address:
 
 **http://localhost:3000**
 
-You should now see the Past Paper Archive!
+You should now see the PastPerfect!
 
 *Note: Keep the terminal window open while using the application. Closing it will stop the application.*
 
