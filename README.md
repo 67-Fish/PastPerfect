@@ -6,7 +6,7 @@ This application is a digital archive of past examination papers. It allows you 
 
 This guide will walk you through setting up and running the application on your computer. No programming experience is required. If you would like to just see a preview, you may watch the video here: https://drive.google.com/drive/folders/1oj-d66sOajx1dovfgq5Q0ZvgqA7-pYgl?usp=sharing
 
-On the video, it is stated that there are 3 roles: Admin, School Admin, and Student. It's forgotten to mention that there is also a teacher role on the website.
+On the video, it is stated that there are 3 roles: Admin, School Admin, and Student. Teachers will upload past papers through the school admin account.
 
 ---
 
